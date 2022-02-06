@@ -105,5 +105,3 @@ dist
 env.ts
 keys
 keys/private.key
-.gitignore
-keys/private.key
