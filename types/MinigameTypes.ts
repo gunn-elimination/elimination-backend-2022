@@ -5,7 +5,6 @@ export enum GameType {
   oop = ""
 }
 export type GameInfo = {
-  community: string;
   game: GameType;
   start: number;
   end: number;

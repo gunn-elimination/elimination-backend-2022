@@ -153,7 +153,7 @@ const eliminateParticipant = async (
     .collection(gameID)
     .insertOne(eliminationRecord);
   SocketEventManager.broadcastEvent(
-    `community_${game.community}`,
+    `eliminationKill`,
     "eliminationKill",
     {
       kill: eliminationRecord,
