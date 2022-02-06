@@ -103,3 +103,6 @@ dist
 # TernJS port file
 .tern-port
 env.ts
+keys
+keys/private.key
+.gitignore
