@@ -78,12 +78,7 @@ export const RESTServer = (): express.Application => {
     );
   } else {
     console.log(`HTTP Server running on port ${env.port}`);
-    const SocketAPI = new SocketServer(server.listen(env.port));
+    new SocketServer(server.listen(env.port));
   }
-  const socketServer = new SocketServer(
-    server.listen(env.port || 443, () => {
-      console.log(`Listening on port ${env.port || 443}`);
-    })
-  );
   return server;
 };
