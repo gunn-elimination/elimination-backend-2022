@@ -9,6 +9,7 @@ import { API_DOMAIN } from "./constants";
 import nFetch from "./fetch";
 import { getUserByID } from "../Helpers/UserAPIs";
 import { Encryptions } from "../Helpers/Encryptions";
+import https from "https";
 const importAllHandlers = async (path: string, server: express.Application) => {
   await Promise.all(
     (
@@ -60,6 +61,25 @@ export const RESTServer = (): express.Application => {
     readdirSync(`${process.cwd()}/src/RESTEndpoints`)
   );
   importAllHandlers(`${process.cwd()}/src/RESTEndpoints`, server);
+  if (env?.webserver) {
+    const httpsServer = https.createServer(
+      {
+        //@ts-ignore
+        key: readFileSync(env.webserver?.keyPath),
+        //@ts-ignore
+        cert: readFileSync(env.webserver?.certPath),
+      },
+      server
+    );
+    new SocketServer(
+      httpsServer.listen(env.port, () => {
+        console.log(`Secure HTTP Server started on port ${env.port}`);
+      })
+    );
+  } else {
+    console.log(`HTTP Server running on port ${env.port}`);
+    const SocketAPI = new SocketServer(server.listen(env.port));
+  }
   const socketServer = new SocketServer(
     server.listen(env.port || 443, () => {
       console.log(`Listening on port ${env.port || 443}`);
