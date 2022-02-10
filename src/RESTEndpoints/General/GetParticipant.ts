@@ -14,7 +14,7 @@ export const GetGame = {
     if (!gameID || !user) {
       return res.status(400).send("Bad Request");
     }
-    const participant = await getParticipant(gameID, user.id);
+    const participant = await getParticipant(gameID, user.userID);
     (participant ? res.status(200) : res.status(404)).send(participant);
   },
 } as RESTHandler;

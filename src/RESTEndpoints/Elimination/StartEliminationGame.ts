@@ -1,8 +1,4 @@
-import {
-  RESTMethods,
-  RESTHandler,
-  Community,
-} from "../../../types/DisadusTypes";
+import { RESTMethods, RESTHandler } from "../../../types/DisadusTypes";
 import { EliminationAPIs } from "../../Helpers/EliminationAPIs";
 import { getGameFromID, updateGameInfo } from "../../Helpers/GamesAPI";
 import nFetch from "../../Utils/fetch";
@@ -21,14 +17,8 @@ export const GetUserSelf = {
     if (!game) {
       return res.status(400).send("Invalid Game ID");
     }
-    const community = (await nFetch(
-      `https://api.disadus.app/community/${game?.community}`
-    ).then((x) => x.json())) as Community;
-    if (!community) {
-      return res.status(400).send("Invalid Community with Game");
-    }
-    if (!community.admins.includes(user.id)) {
-      return res.status(400).send("User is not authorized to start this game");
+    if (!user.admin) {
+      return res.status(403).send("Forbidden");
     }
     const result = await EliminationAPIs.initializeEliminationGame(game);
     const updatedGame = {
@@ -38,7 +28,7 @@ export const GetUserSelf = {
     await updateGameInfo(game.id, {
       start: updatedGame.start,
     });
-    SocketEventManager.broadcastEvent(community.id, "gameStarted", {
+    SocketEventManager.broadcastEvent("gameStarted", "gameStarted", {
       gameInfo: updatedGame,
     });
     res.status(200).send(result);

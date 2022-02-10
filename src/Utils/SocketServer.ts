@@ -41,7 +41,7 @@ export class SocketServer {
           },
         }).then((response) => response.json() as Promise<DisadusUser>);
         if (userInfo) {
-          userInfo.communities.map((x) => socket.join(`community_${x}`));
+          socket.join(`all`);
           socket.join(`userID_${userInfo.id}`);
           socket.emit("userInfo", userInfo);
         }

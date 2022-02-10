@@ -12,7 +12,7 @@ export const GetUserSelf = {
     }
     const result = await EliminationAPIs.eliminateParticipant(
       gameID,
-      user.id,
+      user.userID,
       userID,
       eliminationCode
     );

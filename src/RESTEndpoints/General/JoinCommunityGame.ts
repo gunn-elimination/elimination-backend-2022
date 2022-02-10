@@ -16,10 +16,10 @@ export const JoinCommunityGame = {
     if (!(await getGameFromID(gameID))) {
       return res.status(404).send("Game not found");
     }
-    if (await getParticipant(gameID, user.id)) {
+    if (await getParticipant(gameID, user.userID)) {
       return res.status(400).send("Already in game");
     }
-    await joinGame(gameID, user.id);
+    await joinGame(gameID, user.userID);
     res.status(200).send("Joined game");
   },
 } as RESTHandler;

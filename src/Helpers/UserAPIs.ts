@@ -25,3 +25,18 @@ export const createUser = async (user: User) => {
     message: "User created",
   };
 };
+export const getUserByEmail = (email: string) => {
+  return MongoDB.db("UserData")
+    .collection("users")
+    .findOne({ email: email });
+}
+export const getUserByID = (userID: string) => {
+  return MongoDB.db("UserData")
+    .collection("users")
+    .findOne({ userID: userID });
+}
+export const getUserByUsername = (username: string) => {
+  return MongoDB.db("UserData")
+    .collection("users")
+    .findOne({ username: username });
+}

@@ -11,7 +11,7 @@ export const GetElimUserSelf = {
     }
     res
       .status(200)
-      .send(await EliminationAPIs.getEliminationParticipant(gameID, user.id));
+      .send(await EliminationAPIs.getEliminationParticipant(gameID, user.userID));
   },
 } as RESTHandler;
 export default GetElimUserSelf;
