@@ -31,5 +31,5 @@ export type User = {
   firstName: string;
   lastName: string;
   admin: boolean;
-  createdBy: "Disadus" | "Gunn1" | "WATT" | "UNI";
+  createdBy: "Disadus" | "Gunn.One" | "WATT" | "Standalone";
 };

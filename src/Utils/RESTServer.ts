@@ -3,10 +3,12 @@ import express from "express";
 import { readdirSync } from "fs";
 import { lstat, readdir } from "fs/promises";
 import { env } from "../../env";
-import { DisadusUser, RESTHandler } from "../../types/DisadusTypes";
+import { User, RESTHandler } from "../../types/DisadusTypes";
 import SocketServer from "./SocketServer";
 import { API_DOMAIN } from "./constants";
 import nFetch from "./fetch";
+import { getUserByID } from "../Helpers/UserAPIs";
+import { Encryptions } from "../Helpers/Encryptions";
 const importAllHandlers = async (path: string, server: express.Application) => {
   await Promise.all(
     (
@@ -26,16 +28,17 @@ const importAllHandlers = async (path: string, server: express.Application) => {
             return console.log(`${file} is not a REST handler`);
           }
           console.log(handler);
-          let user = null as DisadusUser | null;
+          let user = null as User | null;
           server[handler.method](handler.path, async (req, res, next) => {
             if (handler.sendUser) {
               if (!req.headers.authorization)
                 return res.status(401).send("Unauthorized");
-              user = await nFetch(`${API_DOMAIN}/user/@me`, {
-                headers: {
-                  Authorization: req.headers.authorization,
-                },
-              }).then((response) => response.json() as Promise<DisadusUser>);
+              const tokenInfo = await Encryptions.decrypt(
+                req.headers.authorization!
+              );
+              user = (await getUserByID(
+                tokenInfo.data.userID!
+              )) as unknown as User;
             }
             handler.run(req, res, next, user || undefined);
           });
@@ -52,10 +55,7 @@ export const RESTServer = (): express.Application => {
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
   server.use(cors());
-  console.log(
-    "Importing REST Handlers",
-    readdirSync(`./src/RESTEndPoints`)
-  );
+  console.log("Importing REST Handlers", readdirSync(`./src/RESTEndPoints`));
   importAllHandlers(`${process.cwd()}/src/RESTEndPoints`, server);
   const socketServer = new SocketServer(server.listen(env.port || 443));
   return server;

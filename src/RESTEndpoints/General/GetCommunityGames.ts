@@ -1,7 +1,7 @@
 import { RESTMethods, RESTHandler } from "../../../types/DisadusTypes";
 import { EliminationAPIs } from "../../Helpers/EliminationAPIs";
-import { getCommunityGames, getGameFromID } from "../../Helpers/GamesAPI";
-export const GetCommunityGames = {
+import { getGames } from "../../Helpers/GamesAPI";
+export const getGamesAPI = {
   path: "/community/:communityID/games",
   method: RESTMethods.GET,
   sendUser: false,
@@ -10,7 +10,7 @@ export const GetCommunityGames = {
     if (!communityID) {
       return res.status(400).send("Bad Request");
     }
-    res.status(200).send(await getCommunityGames(communityID));
+    res.status(200).send(await getGames());
   },
 } as RESTHandler;
-export default GetCommunityGames;
+export default getGamesAPI;

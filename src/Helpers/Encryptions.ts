@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
-import { env } from "../env";
-import { PluginIntent } from "../RESTAPI/plugins/PluginOAuth";
+import { env } from "../../env";
 export enum UserTokenTypes {
   USER = 0,
   OAUTH = 1,
   PLUGIN = 2,
+  APP = 3,
 }
+export type AppID = "Disadus" | "Gunn.One" | "WATT" | "Standalone";
 export class Encryptions {
   /**
    * Signs a payload with the JWT secret
@@ -18,14 +19,12 @@ export class Encryptions {
         payload,
         env.jwtSecret,
         { algorithm: "RS512" },
-        (er, encrypted) => (er ? rej(er) : res(encrypted))
+        (er: any, encrypted: unknown) => (er ? rej(er) : res(encrypted))
       )
     );
   }
   /**
    * Decrypts a payload with the JWT secret
-   * @param {string} encryptedPayload
-   * @return {Promise<string|object|Buffer>}
    */
   static decrypt(encryptedPayload: string) {
     return new Promise((res, rej) =>
@@ -33,9 +32,15 @@ export class Encryptions {
         encryptedPayload,
         env.jwtSecret,
         { algorithms: ["RS512"], ignoreExpiration: true },
-        (er, decrypted) => (er ? rej(er) : res(decrypted))
+        (er, decrypted) => (er ? rej(er) : res(decrypted as any))
       )
-    );
+    ) as Promise<{
+      data: {
+        tokenType: UserTokenTypes;
+        userID?: string;
+        appID?: AppID;
+      };
+    }>;
   }
   /**
    * Issues a JWT token with the userID. Expires in 2 weeks or whatever specified in seconds
@@ -53,16 +58,11 @@ export class Encryptions {
     };
     return this.encrypt(payload);
   }
-  static issueAccessToken(
-    userID: string,
-    intents: PluginIntent[],
-    expiration = 1209600
-  ) {
+  static issueAppToken(appID: string, expiration = 1209600) {
     let payload = {
       data: {
-        tokenType: UserTokenTypes.PLUGIN,
-        userID: userID,
-        intents: intents,
+        tokenType: UserTokenTypes.APP,
+        appID,
       },
       exp: Math.floor(Date.now() / 1000) + expiration,
     };

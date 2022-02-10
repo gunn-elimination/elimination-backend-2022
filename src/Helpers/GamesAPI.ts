@@ -5,7 +5,11 @@ export const getGameFromID = (id: string) =>
   MongoDB.db("Games")
     .collection("gameInfo")
     .findOne({ id: id }) as Promise<GameInfo | null>;
-
+export const getGames = () =>
+  MongoDB.db("Games")
+    .collection("gameInfo")
+    .find({})
+    .toArray() as unknown as Promise<GameInfo[]>;
 export const createGame = async (info: Partial<GameInfo>) => {
   const newGame = {
     ...info,
@@ -23,12 +27,6 @@ export const createGame = async (info: Partial<GameInfo>) => {
     .insertOne(newGame)
     .then(() => newGame);
 };
-
-export const getCommunityGames = (community: string) =>
-  MongoDB.db("Games")
-    .collection("gameInfo")
-    .find({ community: community })
-    .toArray() as unknown as Promise<GameInfo[]>;
 export const deleteGame = (id: string) =>
   MongoDB.db("Games")
     .collection("gameInfo")

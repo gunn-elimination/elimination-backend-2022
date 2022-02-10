@@ -28,7 +28,7 @@ export const GetUserSelf = {
     await updateGameInfo(game.id, {
       start: updatedGame.start,
     });
-    SocketEventManager.broadcastEvent("gameStarted", "gameStarted", {
+    SocketEventManager.broadcastEvent("all", "gameStarted", {
       gameInfo: updatedGame,
     });
     res.status(200).send(result);
