@@ -18,7 +18,7 @@ export const CreateGame = {
       res.status(400).send("Bad Request");
       return;
     }
-    if (!user.admin) {
+    if (!user?.admin) {
       res.status(403).send("Forbidden");
       return;
     }
