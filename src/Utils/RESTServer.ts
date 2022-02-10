@@ -60,6 +60,10 @@ export const RESTServer = (): express.Application => {
     readdirSync(`${process.cwd()}/src/RESTEndpoints`)
   );
   importAllHandlers(`${process.cwd()}/src/RESTEndpoints`, server);
-  const socketServer = new SocketServer(server.listen(env.port || 443));
+  const socketServer = new SocketServer(
+    server.listen(env.port || 443, () => {
+      console.log(`Listening on port ${env.port || 443}`);
+    })
+  );
   return server;
 };
