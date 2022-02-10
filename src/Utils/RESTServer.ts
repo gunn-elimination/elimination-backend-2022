@@ -57,9 +57,9 @@ export const RESTServer = (): express.Application => {
   server.use(cors());
   console.log(
     "Importing REST Handlers",
-    readdirSync(`${process.cwd()}/src/RESTEndPoints`)
+    readdirSync(`${process.cwd()}/src/RESTEndpoints`)
   );
-  importAllHandlers(`${process.cwd()}/src/RESTEndPoints`, server);
+  importAllHandlers(`${process.cwd()}/src/RESTEndpoints`, server);
   const socketServer = new SocketServer(server.listen(env.port || 443));
   return server;
 };
