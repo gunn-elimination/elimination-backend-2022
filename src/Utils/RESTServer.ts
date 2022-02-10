@@ -1,6 +1,6 @@
 import cors from "cors";
 import express from "express";
-import { readdirSync } from "fs";
+import { readdirSync, readFileSync } from "fs";
 import { lstat, readdir } from "fs/promises";
 import { env } from "../../env";
 import { User, RESTHandler } from "../../types/DisadusTypes";
