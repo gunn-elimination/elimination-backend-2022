@@ -104,4 +104,4 @@ dist
 .tern-port
 env.ts
 keys/
-keys/private.key
+output/
