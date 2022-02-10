@@ -8,7 +8,9 @@ export const GetGame = {
   run: async (req, res, next, user) => {
     const gameID = req.params.gameID;
     if (!gameID) {
-      return res.status(400).send("Bad Request");
+      await next();
+      res.status(400).send("Bad Request");
+      return;
     }
     res.status(200).send(await getGameFromID(gameID));
   },

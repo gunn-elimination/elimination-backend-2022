@@ -26,6 +26,7 @@ export const createGame = async (info: Partial<GameInfo>) => {
     .collection("gameInfo")
     .insertOne(newGame)
     .then(() => newGame);
+  return newGame;
 };
 export const deleteGame = (id: string) =>
   MongoDB.db("Games")
