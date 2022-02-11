@@ -32,4 +32,5 @@ export type User = {
   lastName: string;
   admin: boolean;
   createdBy: "Disadus" | "Gunn.One" | "WATT" | "Standalone";
+  password: string;
 };
