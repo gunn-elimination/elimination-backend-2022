@@ -103,36 +103,36 @@ const eliminateParticipant = async (
 ) => {
   const game = await getGameFromID(gameID);
   if (!game) {
-    return "Game not found";
+    return {error: "Game not found"};
   }
   if (game.game !== GameType.Elimination) {
-    return "Game is not an elimination game";
+    return {error: "Game is not an elimination game"};
   }
   if (game.start > Date.now()) {
-    return "Game has not started yet";
+    return {error: "Game has not started yet"};
   }
   if (game.end < Date.now()) {
-    return "Game has ended";
+    return {error: "Game has ended"};
   }
   const participant = await getEliminationParticipant(gameID, userID);
   if (!participant) {
-    return "Elimination participant not found";
+    return {error: "Elimination participant not found"};
   }
   if (participant.targetID !== targetID && !adminKill) {
-    return "Target ID does not match";
+    return {error: "Target ID does not match"};
   }
   const target = await getEliminationParticipant(gameID, targetID);
   if (!target) {
-    return "Target participant not found";
+    return {error: "Target participant not found"};
   }
   if (target.secret !== secret && !adminKill) {
-    return "Kill code does not match";
+    return {error:"Kill code does not match"};
   }
   if (participant.eliminated && !adminKill) {
-    return "You have already been eliminated";
+    return {error: "You have already been eliminated"};
   }
   if (target.eliminated && !adminKill) {
-    return "Target has already been eliminated";
+    return {error:"Target has already been eliminated"};
   }
   await updateEliminationParticipant(gameID, targetID, {
     eliminated: true,
