@@ -129,7 +129,7 @@ const eliminateParticipant = async (
     return {error:"Kill code does not match"};
   }
   if (participant.eliminated && !adminKill) {
-    return "You have already been eliminated";
+    return {error: "You have already been eliminated"};
   }
   if (target.eliminated && !adminKill) {
     return {error:"Target has already been eliminated"};
