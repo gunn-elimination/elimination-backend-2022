@@ -32,6 +32,11 @@ export const GetGame = {
     user.userID = user.email.split("@")[0].toUpperCase();
     const response = await createUser(user as unknown as User);
     if (response.success) {
+      await MongoDB.db("UserData")
+        .collection("unverifiedUsers")
+        .findOneAndDelete({
+          verificationNonce: nonce,
+        });
       return res
         .status(200)
         .send(await Encryptions.issueUserToken(user.userID));
