@@ -3,6 +3,7 @@ import TetLib from "../../Helpers/TetLib";
 import { getUserByEmail, getUserByID } from "../../Helpers/UserAPIs";
 import nodemailer from "nodemailer";
 import { env } from "../../../env";
+import { buildEmail } from "../../Helpers/BuildEmail";
 export const Signup = {
   path: "/signup",
   method: RESTMethods.POST,
@@ -62,7 +63,7 @@ export const Signup = {
             },
           })
           .sendMail({
-            from: env.email.email,
+            from: `Gunn Elimination <support@gunnelimination.com>`,
             to: data.email,
             subject: "Verify your email",
             text: `
@@ -70,6 +71,9 @@ export const Signup = {
             Please verify your email by clicking the link below:
             https://api.gunnelimination.com/verify/${verificationNonce}
           `,
+            html: buildEmail(
+              `https://api.gunnelimination.com/verify/${verificationNonce}`
+            ),
           });
         res.status(200).send("OK");
       })
