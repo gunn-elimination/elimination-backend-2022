@@ -29,6 +29,7 @@ export const Signup = {
       if (!data.email) missing.push("email");
       if (!data.password) missing.push("password");
       if (!data.redirectURL) missing.push("redirectURL");
+      console.log(`Missing data in signup: ${missing.join(", ")}`, data,req.body,req);
       return res.status(400).send(`Missing ${missing.join(", ")}`);
     }
     const emailExists = await getUserByEmail(data.email);
