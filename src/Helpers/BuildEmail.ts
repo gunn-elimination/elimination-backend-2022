@@ -109,7 +109,7 @@ export const buildEmail = (link: string) => `
                             <div class="text-muted text-center" style="color: #718096;" align="center">
                               Sent with &lt;3 from Gunn Elimination
                             </div>
-                            <div class="text-muted text-center" style="color: #718096; font-size:12px" align="center">
+                            <div class="text-muted text-center" style="color: rgb(203 213 225); font-size:12px" align="center">
                             Link not working? Copy and paste this link into your browser: ${link}
                           </div>
                             <table class="s-6 w-full" role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%;" width="100%">
