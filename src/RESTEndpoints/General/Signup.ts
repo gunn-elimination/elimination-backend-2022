@@ -22,7 +22,14 @@ export const Signup = {
       !data.password ||
       !data.redirectURL
     ) {
-      return res.status(400).send("Bad Request");
+      //log missing data
+      const missing = [];
+      if (!data.firstName) missing.push("firstName");
+      if (!data.lastName) missing.push("lastName");
+      if (!data.email) missing.push("email");
+      if (!data.password) missing.push("password");
+      if (!data.redirectURL) missing.push("redirectURL");
+      return res.status(400).send(`Missing ${missing.join(", ")}`);
     }
     const emailExists = await getUserByEmail(data.email);
     if (emailExists) {
