@@ -76,7 +76,7 @@ export const buildEmail = (link: string, name: string) => `
                                     <p class="" style="line-height: 24px; font-size: 16px; width: 100%; margin: 0;" align="left">
                                       Hi ${name},
                                       <br>
-                                       We are glad you are interested in taking part in Gunn Elimination. The game starts on the first of March with only one person making it out alive. Think you got what it takes? click that giant red button below!</p>
+                                       We are glad you are interested in taking part in Gunn Elimination. The game starts on the first of March with only one person making it out alive. Think you got what it takes? Click that giant red button below!</p>
                                     <table class="s-4 w-full" role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%;" width="100%">
                                       <tbody>
                                         <tr>
