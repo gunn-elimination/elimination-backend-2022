@@ -10,6 +10,7 @@ import { env } from "../../../env";
 import { Encryptions } from "../../Helpers/Encryptions";
 interface UnverifiedUser extends User {
   verificationNonce?: string;
+  redirectURL?: string;
 }
 export const GetGame = {
   path: "/verify/:verificationNonce",
@@ -28,7 +29,9 @@ export const GetGame = {
     if (!user) {
       return res.status(404).send("User not found");
     }
+    const redirectURL = user.redirectURL;
     delete user.verificationNonce;
+    delete user.redirectURL;
     user.userID = user.email.split("@")[0].toUpperCase();
     const response = await createUser(user as unknown as User);
     if (response.success) {
@@ -37,9 +40,9 @@ export const GetGame = {
         .findOneAndDelete({
           verificationNonce: nonce,
         });
-      return res
-        .status(200)
-        .send(await Encryptions.issueUserToken(user.userID));
+      const token = await Encryptions.issueUserToken(user.userID);
+      console.log(token);
+      return res.redirect(`${redirectURL}/login?token=${token}`);
     }
     return res.status(500).send(response.message);
   },
