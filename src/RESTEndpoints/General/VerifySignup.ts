@@ -46,7 +46,7 @@ export const GetGame = {
         }
       );
       console.log(token, user);
-      res.redirect(`${redirectURL}/login?token=${token}`);
+      res.redirect(`${redirectURL}?token=${token}`);
       return;
     }
     return res.status(500).send(response.message);
