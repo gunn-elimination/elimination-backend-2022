@@ -2,7 +2,7 @@ import { RESTMethods, RESTHandler, User } from "../../../types/DisadusTypes";
 import { Encryptions } from "../../Helpers/Encryptions";
 import { getUserByEmail, getUserByID } from "../../Helpers/UserAPIs";
 import phas from "password-hash-and-salt";
-export const GetGame = {
+export const Login = {
   path: "/login",
   method: RESTMethods.POST,
   sendUser: false,
@@ -45,4 +45,4 @@ export const GetGame = {
       });
   },
 } as RESTHandler;
-export default GetGame;
+export default Login;
