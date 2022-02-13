@@ -13,7 +13,7 @@ interface UnverifiedUser extends User {
 }
 export const GetGame = {
   path: "/verify/:verificationNonce",
-  method: RESTMethods.POST,
+  method: RESTMethods.GET,
   sendUser: false,
   run: async (req, res, next, _) => {
     const nonce = req.params.verificationNonce;
