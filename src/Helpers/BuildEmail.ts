@@ -1,4 +1,4 @@
-export const buildEmail = (link: string) => `
+export const buildEmail = (link: string, name: string) => `
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
 <html>
   <head>
@@ -74,7 +74,10 @@ export const buildEmail = (link: string) => `
                                       </tbody>
                                     </table>
                                     <p class="" style="line-height: 24px; font-size: 16px; width: 100%; margin: 0;" align="left">
-                                      Hi there, you wanted to get stalked for Gunn Elimination? Click on that big red button below to join. Only one may survive. Good luck! </p>
+                                      Hi ${name}, you wanted to get stalked for Gunn Elimination? Click on that big red button below to join. Only one may survive. Good luck! </p>
+                                      <p class="text-muted text-center" style="color: rgb(203 213 225); font-size:12px" align="center">
+                            Link not working? Copy and paste this link into your browser: ${link}
+                          </p>
                                     <table class="s-4 w-full" role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%;" width="100%">
                                       <tbody>
                                         <tr>
@@ -109,9 +112,7 @@ export const buildEmail = (link: string) => `
                             <div class="text-muted text-center" style="color: #718096;" align="center">
                               Sent with &lt;3 from Gunn Elimination
                             </div>
-                            <div class="text-muted text-center" style="color: rgb(203 213 225); font-size:12px" align="center">
-                            Link not working? Copy and paste this link into your browser: ${link}
-                          </div>
+                            
                             <table class="s-6 w-full" role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%;" width="100%">
                               <tbody>
                                 <tr>

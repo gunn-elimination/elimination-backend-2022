@@ -72,7 +72,8 @@ export const Signup = {
             https://api.gunnelimination.com/verify/${verificationNonce}
           `,
             html: buildEmail(
-              `https://api.gunnelimination.com/verify/${verificationNonce}`
+              `https://api.gunnelimination.com/verify/${verificationNonce}`,
+              data.firstName,
             ),
           });
         res.status(200).send("OK");
