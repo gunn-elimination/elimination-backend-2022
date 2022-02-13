@@ -40,9 +40,12 @@ export const GetGame = {
         .findOneAndDelete({
           verificationNonce: nonce,
         });
-      const token = await Encryptions.issueUserToken(user.userID);
+      const token = await Encryptions.issueUserToken(user.userID).catch(er=>{
+        console.log(er);
+      });
       console.log(token);
-      return res.redirect(`${redirectURL}/login?token=${token}`);
+      res.redirect(`${redirectURL}/login?token=${token}`);
+      return;
     }
     return res.status(500).send(response.message);
   },
