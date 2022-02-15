@@ -15,13 +15,15 @@ export const Signup = {
       firstName: req.body.firstName as string,
       lastName: req.body.lastName as string,
       redirectURL: req.body.redirectURL as string,
+      createdBy: req.body.createdBy as string,
     };
     if (
       !data.firstName ||
       !data.lastName ||
       !data.email ||
       !data.password ||
-      !data.redirectURL
+      !data.redirectURL ||
+      !data.createdBy
     ) {
       //log missing data
       const missing = [];
@@ -30,6 +32,7 @@ export const Signup = {
       if (!data.email) missing.push("email");
       if (!data.password) missing.push("password");
       if (!data.redirectURL) missing.push("redirectURL");
+      if (!data.createdBy) missing.push("createdBy");
       return res.status(400).send(`Missing ${missing.join(", ")}`);
     }
     const emailExists = await getUserByEmail(data.email);
