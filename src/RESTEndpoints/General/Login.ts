@@ -26,6 +26,7 @@ export const Login = {
           if (valid) {
             res.status(200).send(await Encryptions.issueUserToken(user.userID));
           }
+          res.status(401).send("Invalid password");
         }
       );
       return;
