@@ -29,7 +29,7 @@ export class Encryptions {
   static decrypt(encryptedPayload: string) {
     return new Promise((res, rej) =>
       jwt.verify(
-        encryptedPayload,
+        encryptedPayload.replace(/^(Bearer|App) /, ""),
         env.jwtSecret,
         { algorithms: ["RS512"], ignoreExpiration: true },
         (er, decrypted) => (er ? rej(er) : res(decrypted as any))
