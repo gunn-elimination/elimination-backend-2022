@@ -36,10 +36,12 @@ const importAllHandlers = async (path: string, server: express.Application) => {
                 return res.status(401).send("Unauthorized");
               const tokenInfo = await Encryptions.decrypt(
                 req.headers.authorization!
-              );
-              user = (await getUserByID(
-                tokenInfo.data.userID!
-              )) as unknown as User;
+              ).catch((er) => {});
+              if (tokenInfo) {
+                user = (await getUserByID(
+                  tokenInfo.data.userID!
+                )) as unknown as User;
+              }
             }
             handler.run(req, res, next, user || undefined);
           });
