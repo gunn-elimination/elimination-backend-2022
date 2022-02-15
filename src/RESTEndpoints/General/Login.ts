@@ -25,6 +25,7 @@ export const Login = {
         async (err, valid) => {
           if (valid) {
             res.status(200).send(await Encryptions.issueUserToken(user.userID));
+            return;
           }
           res.status(401).send("Invalid password");
         }
