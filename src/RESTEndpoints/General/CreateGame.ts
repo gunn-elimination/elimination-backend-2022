@@ -23,12 +23,13 @@ export const CreateGame = {
       res.status(403).send("Forbidden");
       return;
     }
+    const createdGame = await createGame(game);
     SocketEventManager.broadcastEvent(
       "all",
       "gameCreated",
-      await createGame(game)
+      createdGame
     );
-    res.status(204).send();
+    res.status(200).send(createdGame);
   },
 } as RESTHandler;
 export default CreateGame;
