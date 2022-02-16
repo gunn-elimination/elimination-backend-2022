@@ -34,7 +34,7 @@ export class SocketServer {
       this.sockets.set(socket.id, socket);
       const tokenInfo = await Encryptions.decrypt(
         socket.handshake.headers.authorization!
-      );
+      ).catch((er) => {});
       if (!tokenInfo || tokenInfo.data.appID) return socket.disconnect(true);
       this.socketIdentities.set(socket.id, tokenInfo.data.userID!);
       (async () => {
