@@ -10,5 +10,7 @@ export type GameInfo = {
   end: number;
   id: string;
   name: string;
+  description: string;
+  
 };
 export type GameSettings = EliminationSettings;

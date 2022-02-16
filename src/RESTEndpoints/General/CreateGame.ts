@@ -13,8 +13,9 @@ export const CreateGame = {
       game: req.body.game as GameType,
       end: req.body.end as number,
       name: req.body.name as string,
+      description: req.body.description as string,
     };
-    if (!game) {
+    if (!game || !game.game || !game.end || !game.name || !game.description) {
       res.status(400).send("Bad Request");
       return;
     }
