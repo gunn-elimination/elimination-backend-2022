@@ -41,6 +41,9 @@ const importAllHandlers = async (path: string, server: express.Application) => {
                 user = (await getUserByID(
                   tokenInfo.data.userID!
                 )) as unknown as User;
+                console.log(user,tokenInfo.data);
+              } else {
+                return res.status(401).send("Unauthorized");
               }
             }
             handler.run(req, res, next, user || undefined);
