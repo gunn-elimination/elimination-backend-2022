@@ -17,7 +17,6 @@ const createEliminationParticipants = async (info: GameInfo) => {
       key: {
         userID: "hashed",
       },
-      unique: true,
       name: "userID",
     },
     {
