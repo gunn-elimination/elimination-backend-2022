@@ -41,7 +41,29 @@ export const initializeEliminationGame = async (info: GameInfo) =>
     createEliminationKillFeed(info),
     createEliminationParticipants(info),
   ])
-    .then(() => true)
+    .then(async () => {
+      const participants = await getParticipants(info.id);
+      //randomize order of participants
+      participants.sort(() => Math.random() - 0.5);
+      const targetObjects = [
+        {
+          userID: participants[0],
+          kills: 0,
+          targetID: participants[participants.length - 1],
+        },
+      ];
+      for (let i = 1; i < participants.length; i++) {
+        targetObjects.push({
+          userID: participants[i],
+          kills: 0,
+          targetID: participants[i - 1],
+        });
+      }
+      await MongoDB.db("EliminationUserData")
+        .collection(info.id)
+        .insertMany(targetObjects);
+      return true;
+    })
     .catch(() => false);
 
 const leaderboard = async (gameID: string, limit: number) => {
@@ -103,36 +125,36 @@ const eliminateParticipant = async (
 ) => {
   const game = await getGameFromID(gameID);
   if (!game) {
-    return {error: "Game not found"};
+    return { error: "Game not found" };
   }
   if (game.game !== GameType.Elimination) {
-    return {error: "Game is not an elimination game"};
+    return { error: "Game is not an elimination game" };
   }
   if (game.start > Date.now()) {
-    return {error: "Game has not started yet"};
+    return { error: "Game has not started yet" };
   }
   if (game.end < Date.now()) {
-    return {error: "Game has ended"};
+    return { error: "Game has ended" };
   }
   const participant = await getEliminationParticipant(gameID, userID);
   if (!participant) {
-    return {error: "Elimination participant not found"};
+    return { error: "Elimination participant not found" };
   }
   if (participant.targetID !== targetID && !adminKill) {
-    return {error: "Target ID does not match"};
+    return { error: "Target ID does not match" };
   }
   const target = await getEliminationParticipant(gameID, targetID);
   if (!target) {
-    return {error: "Target participant not found"};
+    return { error: "Target participant not found" };
   }
   if (target.secret !== secret && !adminKill) {
-    return {error:"Kill code does not match"};
+    return { error: "Kill code does not match" };
   }
   if (participant.eliminated && !adminKill) {
-    return {error: "You have already been eliminated"};
+    return { error: "You have already been eliminated" };
   }
   if (target.eliminated && !adminKill) {
-    return {error:"Target has already been eliminated"};
+    return { error: "Target has already been eliminated" };
   }
   await updateEliminationParticipant(gameID, targetID, {
     eliminated: true,
@@ -152,23 +174,19 @@ const eliminateParticipant = async (
   await MongoDB.db("EliminationKillFeeds")
     .collection(gameID)
     .insertOne(eliminationRecord);
-  SocketEventManager.broadcastEvent(
-    `all`,
-    "eliminationKill",
-    {
-      kill: eliminationRecord,
-      game,
-      user: {
-        userID: userID,
-        kills: participant.kills + 1,
-      },
-      target: {
-        userID: targetID,
-        kills: target.kills,
-        eliminated: true,
-      },
-    }
-  );
+  SocketEventManager.broadcastEvent(`all`, "eliminationKill", {
+    kill: eliminationRecord,
+    game,
+    user: {
+      userID: userID,
+      kills: participant.kills + 1,
+    },
+    target: {
+      userID: targetID,
+      kills: target.kills,
+      eliminated: true,
+    },
+  });
   SocketEventManager.broadcastEvent(
     `userID_${userID}`,
     "eliminationUpdateSelf",
