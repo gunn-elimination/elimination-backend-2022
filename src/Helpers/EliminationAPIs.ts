@@ -8,6 +8,7 @@ import SocketEventManager from "../Utils/SocketEventManager";
 import { generateID } from "./Functions";
 import { getGameFromID, getParticipants } from "./GamesAPI";
 import TetLib from "./TetLib";
+import fs from "fs/promises";
 const createEliminationParticipants = async (info: GameInfo) => {
   const participantsCollection = await MongoDB.db(
     "EliminationUserData"
@@ -43,14 +44,28 @@ export const initializeEliminationGame = async (info: GameInfo) =>
   ])
     .then(async () => {
       const participants = await getParticipants(info.id);
+      const nouns = await fs
+        .readFile("./nouns.txt")
+        .then((x) => x.toString().split("\n"));
       //randomize order of participants
       participants.sort(() => Math.random() - 0.5);
+      const chooseRandomNoun = () =>
+        nouns[Math.floor(Math.random() * nouns.length)];
       const targetObjects = [
         {
           userID: participants[0],
           kills: 0,
           targetID: participants[participants.length - 1],
-          secret: TetLib.genID(18).toUpperCase(),
+          //choose 5 random nouns concatenated together by a dash
+          secret: [
+            chooseRandomNoun(),
+            chooseRandomNoun(),
+            chooseRandomNoun(),
+            chooseRandomNoun(),
+            chooseRandomNoun(),
+          ]
+            .join("-")
+            .toUpperCase(),
           eliminated: false,
         } as EliminationUserData,
       ];
@@ -59,7 +74,15 @@ export const initializeEliminationGame = async (info: GameInfo) =>
           userID: participants[i],
           kills: 0,
           targetID: participants[i - 1],
-          secret: TetLib.genID(18).toUpperCase(),
+          secret: [
+            chooseRandomNoun(),
+            chooseRandomNoun(),
+            chooseRandomNoun(),
+            chooseRandomNoun(),
+            chooseRandomNoun(),
+          ]
+            .join("-")
+            .toUpperCase(),
           eliminated: false,
         });
       }
