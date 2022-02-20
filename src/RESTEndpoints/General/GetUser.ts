@@ -10,6 +10,9 @@ export const GetGame = {
       return res.status(400).send("Bad Request");
     }
     const user = (await getUserByID(userID)) as any as User;
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
     user!.password = "";
     (user ? res.status(200) : res.status(404)).send(user);
   },
