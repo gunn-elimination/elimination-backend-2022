@@ -7,6 +7,7 @@ import { GameInfo, GameType } from "../../types/MinigameTypes";
 import SocketEventManager from "../Utils/SocketEventManager";
 import { generateID } from "./Functions";
 import { getGameFromID, getParticipants } from "./GamesAPI";
+import TetLib from "./TetLib";
 const createEliminationParticipants = async (info: GameInfo) => {
   const participantsCollection = await MongoDB.db(
     "EliminationUserData"
@@ -50,13 +51,17 @@ export const initializeEliminationGame = async (info: GameInfo) =>
           userID: participants[0],
           kills: 0,
           targetID: participants[participants.length - 1],
-        },
+          secret: TetLib.genID(18).toUpperCase(),
+          eliminated: false,
+        } as EliminationUserData,
       ];
       for (let i = 1; i < participants.length; i++) {
         targetObjects.push({
           userID: participants[i],
           kills: 0,
           targetID: participants[i - 1],
+          secret: TetLib.genID(18).toUpperCase(),
+          eliminated: false,
         });
       }
       await MongoDB.db("EliminationUserData")
@@ -64,7 +69,10 @@ export const initializeEliminationGame = async (info: GameInfo) =>
         .insertMany(targetObjects);
       return true;
     })
-    .catch(() => false);
+    .catch((er) => {
+      console.error(er);
+      return false;
+    });
 const shuffle = async (gameID: string) => {
   const participants = await MongoDB.db("EliminationUserData")
     .collection(gameID)
