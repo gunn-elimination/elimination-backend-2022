@@ -5,7 +5,7 @@ import nFetch from "../../Utils/fetch";
 import SocketEventManager from "../../Utils/SocketEventManager";
 export const GetUserSelf = {
   path: "/elimination/game/:gameID/admin/start",
-  method: RESTMethods.GET,
+  method: RESTMethods.POST,
   sendUser: true,
   run: async (req, res, next, user) => {
     const { gameID, userID } = req.params;
