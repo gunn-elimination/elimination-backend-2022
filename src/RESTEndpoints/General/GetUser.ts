@@ -14,7 +14,7 @@ export const GetGame = {
       return res.status(404).send("User not found");
     }
     user!.password = "";
-    (user ? res.status(200) : res.status(404)).send(user);
+    res.status(200).send(user);
   },
 } as RESTHandler;
 export default GetGame;
