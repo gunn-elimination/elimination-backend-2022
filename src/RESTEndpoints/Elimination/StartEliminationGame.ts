@@ -31,6 +31,9 @@ export const GetUserSelf = {
     SocketEventManager.broadcastEvent("all", "gameStarted", {
       gameInfo: updatedGame,
     });
+    SocketEventManager.broadcastEvent("all", "gameUpdated", {
+      gameInfo: updatedGame,
+    });
     res.status(200).send(result);
   },
 } as RESTHandler;
