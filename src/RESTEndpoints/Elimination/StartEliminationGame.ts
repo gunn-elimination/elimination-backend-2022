@@ -8,8 +8,8 @@ export const GetUserSelf = {
   method: RESTMethods.POST,
   sendUser: true,
   run: async (req, res, next, user) => {
-    const { gameID, userID } = req.params;
-    if (!gameID || !userID || !user) {
+    const { gameID } = req.params;
+    if (!gameID || !user) {
       return res.status(400).send("Bad Request");
     }
     const game = await getGameFromID(gameID);
