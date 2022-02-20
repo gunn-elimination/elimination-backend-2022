@@ -65,6 +65,30 @@ export const initializeEliminationGame = async (info: GameInfo) =>
       return true;
     })
     .catch(() => false);
+const shuffle = async (gameID: string) => {
+  const participants = await MongoDB.db("EliminationUserData")
+    .collection(gameID)
+    .find({})
+    .toArray();
+  const shuffled = participants
+    .sort(() => Math.random() - 0.5)
+    .filter((p) => !p.eliminated) as unknown as EliminationUserData[];
+  for (let i = 0; i < shuffled.length; i++) {
+    shuffled[i].targetID = participants[i + 1].userID;
+  }
+  shuffled[shuffled.length - 1].targetID = participants[0].userID;
+  await Promise.all(
+    shuffled.map((p) => updateEliminationParticipant(gameID, p.userID, p))
+  );
+  return shuffled;
+};
+const revive = async (gameID: string, userID: string) => {
+  const participant = await getEliminationParticipant(gameID, userID);
+  if (!participant) return false;
+  participant.eliminated = false;
+  await updateEliminationParticipant(gameID, userID, participant);
+  return true;
+};
 
 const leaderboard = async (gameID: string, limit: number) => {
   let gameInfo = await getGameFromID(gameID);
@@ -212,4 +236,6 @@ export const EliminationAPIs = {
   getEliminationKillFeed,
   eliminateParticipant,
   initializeEliminationGame,
+  shuffle,
+  revive,
 };
