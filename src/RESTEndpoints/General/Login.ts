@@ -40,7 +40,7 @@ export const Login = {
         !tokenInfo.data.appID) &&
       authInfo.startsWith("App ")
     ) {
-      return res.status(401).send("Invalid token");
+      return res.status(401).send(`Invalid token, ${JSON.stringify(tokenInfo)}`);
     }
     await getUserByEmail(loginInfo.email)
       .then((user) => {
