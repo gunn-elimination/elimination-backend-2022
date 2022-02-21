@@ -14,8 +14,8 @@ export const GetElimUserInfo = {
       userID
     );
 
-    delete participant!.secret;
-    delete participant!.targetID;
+    delete participant?.secret;
+    delete participant?.targetID;
     res.status(200).send(participant);
   },
 } as RESTHandler;
