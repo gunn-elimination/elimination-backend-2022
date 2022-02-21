@@ -36,7 +36,7 @@ export const Login = {
     const tokenInfo = await Encryptions.decrypt(token).catch(() => {});
     if (
       (!tokenInfo ||
-        tokenInfo.data.tokenType == UserTokenTypes.APP ||
+        tokenInfo.data.tokenType !== UserTokenTypes.APP ||
         !tokenInfo.data.appID) &&
       authInfo.startsWith("App ")
     ) {
@@ -46,14 +46,13 @@ export const Login = {
       .then((user) => {
         Encryptions.issueUserToken((user as unknown as User).userID).then(
           (token) => {
-
             res.status(200).send(token);
           }
         );
       })
       .catch(() => {
         if (tokenInfo?.data.appID) {
-            return res.status(469).send("User Does not Exist");
+          return res.status(469).send("User Does not Exist");
         }
         res.status(401).send("Unauthorized");
       });
