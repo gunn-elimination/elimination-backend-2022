@@ -35,6 +35,7 @@ export const Login = {
     const token = authInfo.substring(4);
     const tokenInfo = await Encryptions.decrypt(token).catch((e) => {
       console.warn(e);
+      console.warn(token);
     });
     if (
       (!tokenInfo ||
