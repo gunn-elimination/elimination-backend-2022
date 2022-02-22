@@ -33,14 +33,18 @@ export const Login = {
       return;
     }
     const token = authInfo.substring(4);
-    const tokenInfo = await Encryptions.decrypt(token).catch(() => {});
+    const tokenInfo = await Encryptions.decrypt(token).catch((e) => {
+      console.warn(e);
+    });
     if (
       (!tokenInfo ||
         tokenInfo.data.tokenType !== UserTokenTypes.APP ||
         !tokenInfo.data.appID) &&
       authInfo.startsWith("App ")
     ) {
-      return res.status(401).send(`Invalid token, ${JSON.stringify(tokenInfo)}`);
+      return res
+        .status(401)
+        .send(`Invalid token, ${JSON.stringify(tokenInfo)}`);
     }
     await getUserByEmail(loginInfo.email)
       .then((user) => {
