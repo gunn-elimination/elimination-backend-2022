@@ -1,5 +1,7 @@
-import { GameInfo } from "../../types/MinigameTypes";
+import { GameAnnouncement, GameInfo } from "../../types/MinigameTypes";
+import SocketEventManager from "../Utils/SocketEventManager";
 import { generateID } from "./Functions";
+import TetLib from "./TetLib";
 
 export const getGameFromID = (id: string) =>
   MongoDB.db("Games")
@@ -64,3 +66,30 @@ export const leaveGame = (gameID: string, userID: string) =>
     .collection("gameParticipants")
     .deleteOne({ id: gameID, userID: userID })
     .then(() => true);
+export const getAnnouncements = (gameID: string) =>
+  MongoDB.db("Games")
+    .collection("gameAnnouncements")
+    .find({ game: gameID })
+    .toArray() as unknown as Promise<GameAnnouncement[]>;
+const insertAnnouncement = (announcement: GameAnnouncement) =>
+  MongoDB.db("Games")
+    .collection("gameAnnouncements")
+    .insertOne(announcement)
+    .then(() => announcement);
+export const createAnnouncement = (
+  game: GameInfo,
+  announcement: string,
+  userID: string
+) =>
+  insertAnnouncement({
+    game: game.id,
+    time: Date.now(),
+    message: announcement,
+    userID,
+  }).then((announcement) => {
+    SocketEventManager.broadcastEvent("all", "gameAnnouncement", {
+      game,
+      announcement,
+    });
+    return announcement;
+  });

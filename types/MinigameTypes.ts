@@ -2,7 +2,7 @@ import { EliminationSettings } from "./EliminationTypes";
 
 export enum GameType {
   Elimination = "elimination",
-  oop = ""
+  oop = "",
 }
 export type GameInfo = {
   game: GameType;
@@ -11,6 +11,11 @@ export type GameInfo = {
   id: string;
   name: string;
   description: string;
-  
+};
+export type GameAnnouncement = {
+  game: string;
+  time: number;
+  message: string;
+  userID: string;
 };
 export type GameSettings = EliminationSettings;
