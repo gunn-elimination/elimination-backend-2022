@@ -11,6 +11,7 @@ export type GameInfo = {
   id: string;
   name: string;
   description: string;
+  dev?: boolean;
 };
 export type GameAnnouncement = {
   game: string;

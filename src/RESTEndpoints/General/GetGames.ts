@@ -6,7 +6,11 @@ export const getGamesAPI = {
   method: RESTMethods.GET,
   sendUser: false,
   run: async (req, res, next, _) => {
-    res.status(200).send(await getGames());
+    let allGames = await getGames();
+    if (!req.query.dev) {
+      allGames = allGames.filter((game) => !game.dev);
+    }
+    res.status(200).send(allGames);
   },
 } as RESTHandler;
 export default getGamesAPI;
