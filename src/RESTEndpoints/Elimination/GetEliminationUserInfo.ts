@@ -13,7 +13,9 @@ export const GetElimUserInfo = {
       gameID,
       userID
     );
-
+    if (!participant) {
+      return res.status(404).send("User not found");
+    }
     delete participant?.secret;
     delete participant?.targetID;
     res.status(200).send(participant);
