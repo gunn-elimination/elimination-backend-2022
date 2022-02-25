@@ -26,6 +26,12 @@ const createEliminationParticipants = async (info: GameInfo) => {
       },
       name: "kills",
     },
+    {
+      key: {
+        targetID: "hashed",
+      },
+      name: "targetID",
+    },
   ]);
 };
 const createEliminationKillFeed = async (info: GameInfo) => {
@@ -253,7 +259,12 @@ const eliminateParticipant = async (
     `userID_${targetID}`,
     "eliminationUpdateSelf",
     {
-      user: target,
+      user: {
+        ...target,
+        eliminated: true,
+        eliminatedAt: Date.now(),
+        eliminatedBy: userID,
+      },
       game,
     }
   );
