@@ -111,7 +111,7 @@ const shuffle = async (gameID: string) => {
     .sort(() => Math.random() - 0.5)
     .filter((p) => !p.eliminated) as unknown as EliminationUserData[];
   for (let i = 0; i < shuffled.length; i++) {
-    shuffled[i].targetID = participants[i + 1].userID;
+    shuffled[i].targetID = shuffled[i + 1].userID;
   }
   shuffled[shuffled.length - 1].targetID = shuffled[0].userID;
   await Promise.all(
