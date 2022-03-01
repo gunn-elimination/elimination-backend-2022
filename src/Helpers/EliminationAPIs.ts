@@ -109,7 +109,7 @@ const shuffle = async (gameID: string) => {
     .toArray();
   const shuffled = participants
     .sort(() => Math.random() - 0.5)
-    .filter((p) => !p.eliminated) as unknown as EliminationUserData[];
+    .filter((p) => !p.eliminated && p.userID) as unknown as EliminationUserData[];
   for (let i = 0; i < shuffled.length; i++) {
     shuffled[i].targetID = shuffled[i + 1].userID;
   }
