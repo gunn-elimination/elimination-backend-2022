@@ -14,6 +14,7 @@ export const GetElimUserInfo = {
       userID
     );
     if (!participant) {
+      await next();
       return res.status(404).send("User not found");
     }
     delete participant?.secret;
