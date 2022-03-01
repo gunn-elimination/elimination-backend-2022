@@ -9,6 +9,8 @@ export const Signup = {
   method: RESTMethods.POST,
   sendUser: false,
   run: async (req, res, next, _) => {
+    res.status(400).send("Signup is disabled");
+    return;
     const data = {
       email: req.body.email as string,
       password: req.body.password as string,
@@ -76,7 +78,7 @@ export const Signup = {
           `,
             html: buildEmail(
               `https://api.gunnelimination.com/verify/${verificationNonce}`,
-              data.firstName,
+              data.firstName
             ),
           });
         res.status(200).send("OK");
