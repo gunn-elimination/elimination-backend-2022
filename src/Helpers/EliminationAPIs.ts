@@ -113,7 +113,7 @@ const shuffle = async (gameID: string) => {
   for (let i = 0; i < shuffled.length; i++) {
     shuffled[i].targetID = participants[i + 1].userID;
   }
-  shuffled[shuffled.length - 1].targetID = participants[0].userID;
+  shuffled[shuffled.length - 1].targetID = shuffled[0].userID;
   await Promise.all(
     shuffled.map((p) => updateEliminationParticipant(gameID, p.userID, p))
   );
