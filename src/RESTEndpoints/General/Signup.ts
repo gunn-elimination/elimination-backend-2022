@@ -9,8 +9,8 @@ export const Signup = {
   method: RESTMethods.POST,
   sendUser: false,
   run: async (req, res, next, _) => {
-    res.status(400).send("Signup is disabled");
-    return;
+    // res.status(400).send("Signup is disabled");
+    // return;
     const data = {
       email: req.body.email as string,
       password: req.body.password as string,
