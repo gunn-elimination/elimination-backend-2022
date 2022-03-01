@@ -102,6 +102,7 @@ export const initializeEliminationGame = async (info: GameInfo) =>
       return false;
     });
 const shuffle = async (gameID: string) => {
+  const game = await getGameFromID(gameID);
   const participants = await MongoDB.db("EliminationUserData")
     .collection(gameID)
     .find({})
@@ -115,6 +116,16 @@ const shuffle = async (gameID: string) => {
   shuffled[shuffled.length - 1].targetID = participants[0].userID;
   await Promise.all(
     shuffled.map((p) => updateEliminationParticipant(gameID, p.userID, p))
+  );
+  shuffled.map((x) =>
+    SocketEventManager.broadcastEvent(
+      `userID_${x.userID}`,
+      "eliminationUpdateSelf",
+      {
+        user: x,
+        game,
+      }
+    )
   );
   return shuffled;
 };
