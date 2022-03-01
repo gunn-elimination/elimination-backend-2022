@@ -118,11 +118,40 @@ const shuffle = async (gameID: string) => {
   );
   return shuffled;
 };
-const revive = async (gameID: string, userID: string) => {
+const revive = async (gameID: string, userID: string, actorID: string) => {
   const participant = await getEliminationParticipant(gameID, userID);
   if (!participant) return false;
   participant.eliminated = false;
   await updateEliminationParticipant(gameID, userID, participant);
+  const eliminationRecord = {
+    target: userID,
+    entity: actorID,
+    type: EliminationKillType.Resurrect,
+    at: Date.now(),
+  };
+  const game = await getGameFromID(gameID);
+  await MongoDB.db("EliminationKillFeeds")
+    .collection(gameID)
+    .insertOne(eliminationRecord);
+  SocketEventManager.broadcastEvent(`all`, "eliminationKill", {
+    kill: eliminationRecord,
+    game,
+    user: {
+      userID: actorID,
+    },
+    target: {
+      userID: participant.targetID,
+      eliminated: false,
+    },
+  });
+  SocketEventManager.broadcastEvent(
+    `userID_${userID}`,
+    "eliminationUpdateSelf",
+    {
+      user: participant,
+      game,
+    }
+  );
   return true;
 };
 
