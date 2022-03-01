@@ -16,7 +16,7 @@ export const GetUserSelf = {
         user.userID,
         userID,
         eliminationCode,
-        userID
+        user.userID
       );
       if (result === true) {
         res.status(200).send("Eliminated");
