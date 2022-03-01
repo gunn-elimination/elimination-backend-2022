@@ -11,8 +11,8 @@ export const GetUserSelf = {
     }
     const result = await EliminationAPIs.revive(
       gameID,
-      user.userID,
       userID,
+      user.userID,
     );
     if (result === true) {
       res.status(200).send("Resurrected");
