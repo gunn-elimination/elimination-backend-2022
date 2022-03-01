@@ -23,6 +23,7 @@ export const GetUserSelf = {
       } else {
         res.status(400).send(result);
       }
+      return
     }
     const result = await EliminationAPIs.eliminateParticipant(
       gameID,
