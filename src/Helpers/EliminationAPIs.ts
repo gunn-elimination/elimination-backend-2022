@@ -204,7 +204,8 @@ const updateEliminationParticipant = async (
 const getEliminationKillFeed = async (
   gameID: string,
   limit: number = 30,
-  before?: number
+  before?: number,
+  forceKills: boolean = false,
 ) => {
   let gameInfo = await getGameFromID(gameID);
   if (!gameInfo) {
@@ -212,7 +213,7 @@ const getEliminationKillFeed = async (
   }
   return (await MongoDB.db("EliminationKillFeeds")
     .collection(gameID)
-    .find(before ? { at: { $lt: before } } : {})
+    .find(Object.assign(before ? { at: { $lt: before } } : {}, forceKills? {}:{type: { $ne: EliminationKillType.ForceKill}}))
     .sort({ at: -1 })
     .limit(limit)
     .toArray()) as unknown as EliminationKillFeed[];
