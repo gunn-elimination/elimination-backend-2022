@@ -276,6 +276,7 @@ const eliminateParticipant = async (
     if (!targeter) {
       return { error: "Target participant not found" };
     }
+    console.log(targeter);
     await updateEliminationParticipant(gameID, targeter.userID, {
       kills: participant.kills + 1,
       targetID: target.targetID,
@@ -305,7 +306,7 @@ const eliminateParticipant = async (
     },
   });
   SocketEventManager.broadcastEvent(
-    `userID_${userID}`,
+    `userID_${targeterUser?.userID || userID}`,
     "eliminationUpdateSelf",
     {
       user: participant,
