@@ -11,7 +11,7 @@ export const CreateAnnouncement = {
   method: RESTMethods.POST,
   sendUser: true,
   run: async (req, res, next, user) => {
-    if (!user) {
+    if (!user || !user.admin) {
       res.status(401).send("Unauthorized");
       return;
     }
