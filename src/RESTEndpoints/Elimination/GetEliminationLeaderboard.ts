@@ -6,7 +6,7 @@ export const GetEliminatioonLeaderboard = {
   sendUser: true,
   run: async (req, res, next, user) => {
     const gameID = req.params.gameID;
-    const limit = Math.min(Number(req.query.limit) || 150, 150);
+    const limit = Math.min(Number(req.query.limit) || 150, 500);
 
     if (!gameID || !user) {
       return res.status(400).send("Bad Request");
