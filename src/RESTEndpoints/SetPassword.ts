@@ -22,7 +22,7 @@ export const GetGame = {
       return res.status(404).send("User not found");
     }
     const newpass = await new Promise((res, rej) =>
-      phas(user.password).hash((err, hash) => {
+      phas(password).hash((err, hash) => {
         if (err) rej(err);
         res(hash);
       })
