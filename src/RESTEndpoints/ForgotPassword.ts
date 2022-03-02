@@ -5,7 +5,7 @@ import TetLib from "../Helpers/TetLib";
 import { getUserByEmail } from "../Helpers/UserAPIs";
 import nodemailer from "nodemailer";
 export const Signup = {
-  path: "/signup",
+  path: "/forgot-password",
   method: RESTMethods.POST,
   sendUser: false,
   run: async (req, res, next, _) => {
