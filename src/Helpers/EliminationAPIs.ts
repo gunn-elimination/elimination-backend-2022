@@ -263,10 +263,12 @@ const eliminateParticipant = async (
     eliminatedAt: Date.now(),
     eliminatedBy: userID,
   });
-  await updateEliminationParticipant(gameID, userID, {
-    kills: participant.kills + 1,
-    targetID: target.targetID,
-  });
+  if (!adminKill){
+    await updateEliminationParticipant(gameID, userID, {
+      kills: participant.kills + 1,
+      targetID: target.targetID,
+    });
+  }
   const eliminationRecord = {
     target: targetID,
     entity: adminKill || userID,
