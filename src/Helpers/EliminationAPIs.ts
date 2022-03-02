@@ -263,7 +263,18 @@ const eliminateParticipant = async (
     eliminatedAt: Date.now(),
     eliminatedBy: userID,
   });
-  if (!adminKill){
+  if (!adminKill) {
+    await updateEliminationParticipant(gameID, userID, {
+      kills: participant.kills + 1,
+      targetID: target.targetID,
+    });
+  } else {
+    const targeter = (await MongoDB.db("EliminationUserData")
+      .collection(gameID)
+      .findOne({ targetID })) as any as Promise<EliminationUserData | null>;
+    if (!targeter) {
+      return { error: "Target participant not found" };
+    }
     await updateEliminationParticipant(gameID, userID, {
       kills: participant.kills + 1,
       targetID: target.targetID,
