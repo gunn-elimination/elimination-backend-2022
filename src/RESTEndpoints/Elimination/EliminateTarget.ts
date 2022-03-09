@@ -6,7 +6,7 @@ export const GetUserSelf = {
   sendUser: true,
   run: async (req, res, next, user) => {
     const { gameID, userID } = req.params;
-    const eliminationCode = req.body.eliminationCode.toUppercase();
+    const eliminationCode = (req.body.eliminationCode as string).toUpperCase();
     if (!gameID || !userID || !user || !eliminationCode) {
       return res.status(400).send("Bad Request");
     }
@@ -23,7 +23,7 @@ export const GetUserSelf = {
       } else {
         res.status(400).send(result);
       }
-      return
+      return;
     }
     const result = await EliminationAPIs.eliminateParticipant(
       gameID,
