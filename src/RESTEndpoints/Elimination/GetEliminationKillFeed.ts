@@ -6,7 +6,7 @@ export const GetEliminationKillFeed = {
   sendUser: true,
   run: async (req, res, next, user) => {
     const { gameID } = req.params;
-    const limit = Math.min(Number(req.query.limit) || 75, 75);
+    const limit = Math.min(Number(req.query.limit) || 75, 99999);
     const before = Number(req.query.before) || 0;
 
     if (!gameID || !user) {
