@@ -279,7 +279,7 @@ const eliminateParticipant = async (
     }
     console.log(targeter);
     await updateEliminationParticipant(gameID, targeter.userID, {
-      kills: participant.kills + 1,
+      kills: targeter.kills + 1,
       targetID: target.targetID,
     });
     targeterUser = targeter;
